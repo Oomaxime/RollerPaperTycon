@@ -1,0 +1,8 @@
+services:
+  hardhat:
+    build:
+      context: .
+    environment:
+      NODE_ENV: production
+    ports:
+      - 8545:8545
