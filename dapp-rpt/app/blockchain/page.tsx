@@ -42,7 +42,7 @@ export default function Blockchain() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 p-8">
-      <h1 className="text-8xl font-bold mb-8 text-gray-800">
+      <h1 className="text-base font-bold mb-8 text-gray-800">
         Blockchain - RollerPaperTycoon
       </h1>
       <ConnectButton />
