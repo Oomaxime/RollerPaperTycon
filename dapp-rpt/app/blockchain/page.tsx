@@ -1,41 +1,41 @@
 "use client";
 
-import { HETIC_ABI } from "@/public/hetic";
+import { RPT_ABI } from "@/public/RollerPaperTycoon";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount, useReadContract, useWriteContract } from "wagmi";
 
 /**
- * Adresse du contrat HETIC ERC20.
- * Cette adresse est utilisée pour interagir avec le contrat intelligent HETIC.
+ * Adresse du contrat RPT ERC20.
+ * Cette adresse est utilisée pour interagir avec le contrat intelligent RPT.
  */
-const HETIC_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+const RPT_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
 export default function Blockchain() {
   const { writeContract, isPending, isSuccess, isError } = useWriteContract();
   const { address, isConnected } = useAccount();
 
   /**
-   * Lecture du solde du contrat HETIC ERC20.
-   * Cette lecture permet de récupérer le solde du contrat HETIC ERC20 pour l'adresse connectée.
-   * @dev refetch permet de rafraîchir le solde du contrat HETIC ERC20.
+   * Lecture du solde du contrat RPT ERC20.
+   * Cette lecture permet de récupérer le solde du contrat RPT ERC20 pour l'adresse connectée.
+   * @dev refetch permet de rafraîchir le solde du contrat RPT ERC20.
    */
   const { data: balance, refetch } = useReadContract({
-    abi: HETIC_ABI, // ABI du contrat HETIC ERC20
+    abi: RPT_ABI, // ABI du contrat RPT ERC20
     functionName: "balanceOf", // Nom de la fonction à appeler
-    address: HETIC_ADDRESS, // Adresse du contrat HETIC ERC20
+    address: RPT_ADDRESS, // Adresse du contrat RPT ERC20
     args: address ? [address] : undefined, // Only pass args if address exists
   });
 
   /**
-   * Fonction pour créer des jetons HETIC ERC20.
-   * Cette fonction permet de créer des jetons HETIC ERC20 pour l'adresse connectée.
+   * Fonction pour créer des jetons RPT ERC20.
+   * Cette fonction permet de créer des jetons RPT ERC20 pour l'adresse connectée.
    */
   const handleClick = () => {
     if (!address) return;
     writeContract({
-      abi: HETIC_ABI, // ABI du contrat HETIC ERC20
+      abi: RPT_ABI, // ABI du contrat RPT ERC20
       functionName: "mint", // Nom de la fonction à appeler
-      address: HETIC_ADDRESS, // Adresse du contrat HETIC ERC20
+      address: RPT_ADDRESS, // Adresse du contrat RPT ERC20
       args: [address, 100n], // Argument pour la fonction mint
     });
   };
@@ -43,7 +43,7 @@ export default function Blockchain() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-8">
       <h1 className="text-8xl font-bold mb-8 text-gray-800">
-        Blockchain - Hetic
+        Blockchain - RollerPaperTycoon
       </h1>
       <ConnectButton />
       {isConnected ? (

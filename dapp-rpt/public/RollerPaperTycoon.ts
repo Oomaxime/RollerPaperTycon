@@ -1,10 +1,10 @@
 /**
- * HETIC_ABI est l'Interface Binaire d'Application (ABI) pour le contrat intelligent HETIC.
+ * RPT_ABI est l'Interface Binaire d'Application (ABI) pour le contrat intelligent RPT.
  * Dans une application décentralisée (dApp), l'ABI est utilisée pour interagir avec le contrat intelligent.
  * Elle définit les fonctions et les événements qui peuvent être appelés et écoutés, respectivement, sur le contrat intelligent.
  * Cela permet à la dApp de coder et décoder les données vers et depuis le contrat intelligent.
  */
-export const HETIC_ABI = [
+export const RPT_ABI = [
   {
     inputs: [],
     stateMutability: "nonpayable",

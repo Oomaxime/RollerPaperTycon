@@ -3,12 +3,12 @@
 
 import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
-// Ce module utilise Hardhat Ignition pour gérer le déploiement du smart contrat Hetic.
-const heticModule = buildModule("heticModule", (m) => {
-  // Déploiement du smart contrat Hetic
-  const hetic = m.contract("Hetic");
+// Ce module utilise Hardhat Ignition pour gérer le déploiement du smart contrat RollerPaperTycoon.
+const rptModule = buildModule("rptModule", (m) => {
+  // Déploiement du smart contrat RollerPaperTycoon
+  const rpt = m.contract("RollerPaperTycoon");
 
-  return { hetic };
+  return { rpt };
 });
 
-export default heticModule;
+export default rptModule;

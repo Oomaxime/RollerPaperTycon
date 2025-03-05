@@ -8,7 +8,7 @@ import { hardhat } from "wagmi/chains";
  * Cette configuration définit les paramètres de l'application, y compris le nom de l'application,
  */
 export const config = getDefaultConfig({
-  appName: "Dapp Hetic",
+  appName: "Dapp RollerPaperTycoon",
   projectId: "YOUR_PROJECT_ID",
   chains: [hardhat], // Chaîne de test (la blockchain que vous avez en local)
   ssr: true, // Si votre dApp utilise le rendu côté serveur (SSR)
