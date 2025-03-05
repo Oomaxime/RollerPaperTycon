@@ -1,6 +1,6 @@
 "use client";
 
-import { RPT_ABI } from "@/public/RollerPaperTycoon";
+import { RPT_ABI } from "@/data/RollerPaperTycoon";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount, useReadContract, useWriteContract } from "wagmi";
 
