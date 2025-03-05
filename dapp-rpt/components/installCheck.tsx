@@ -37,6 +37,16 @@ export default function InstallCheck() {
       e.preventDefault();
       // Store the event so it can be triggered later
       setDeferredPrompt(e as BeforeInstallPromptEvent);
+
+      // Add debug logging
+      console.log("beforeinstallprompt event fired");
+    });
+
+    // Add debug code to check if PWA criteria are met
+    console.log("PWA environment check:", {
+      isHttps: window.location.protocol === "https:",
+      hasServiceWorker: "serviceWorker" in navigator,
+      isStandalone: window.matchMedia("(display-mode: standalone)").matches,
     });
 
     return () => {
