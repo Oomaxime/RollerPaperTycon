@@ -1,6 +1,6 @@
 "use client";
 
-import { RPT_ABI } from "@/public/RollerPaperTycoon";
+import { RPT_ABI } from "@/data/RollerPaperTycoon";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount, useReadContract, useWriteContract } from "wagmi";
 
@@ -36,13 +36,13 @@ export default function Blockchain() {
       abi: RPT_ABI, // ABI du contrat RPT ERC20
       functionName: "mint", // Nom de la fonction à appeler
       address: RPT_ADDRESS, // Adresse du contrat RPT ERC20
-      args: [address, 100n], // Argument pour la fonction mint
+      args: [address, 100000n], // Argument pour la fonction mint
     });
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-8">
-      <h1 className="text-8xl font-bold mb-8 text-gray-800">
+    <div className="flex flex-col min-h-screen bg-gray-100 p-8">
+      <h1 className="text-base font-bold mb-8 text-gray-800">
         Blockchain - RollerPaperTycoon
       </h1>
       <ConnectButton />
@@ -57,19 +57,17 @@ export default function Blockchain() {
           >
             Refresh
           </button>
+          <button
+            onClick={handleClick}
+            className="mt-4 bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-colors mb-4 w-[300px]"
+          >
+            Mint
+          </button>
         </div>
       ) : (
         <p className="text-lg text-gray-500">
           Connectez-vous avec votre wallet
         </p>
-      )}
-      {isConnected && (
-        <button
-          onClick={handleClick}
-          className="mt-4 bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-colors mb-4"
-        >
-          Mint
-        </button>
       )}
       {isPending && <p className="text-yellow-500">Minting...</p>}
       {isSuccess && <p className="text-green-500">Minting successful!</p>}
