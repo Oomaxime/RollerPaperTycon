@@ -1,9 +1,20 @@
 "use client";
 import { useState, useEffect } from "react";
 
+// Define the interface for BeforeInstallPromptEvent
+interface BeforeInstallPromptEvent extends Event {
+  readonly platforms: string[];
+  readonly userChoice: Promise<{
+    outcome: "accepted" | "dismissed";
+    platform: string;
+  }>;
+  prompt(): Promise<void>;
+}
+
 export default function InstallCheck() {
   const [isInstalled, setIsInstalled] = useState(false);
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [deferredPrompt, setDeferredPrompt] =
+    useState<BeforeInstallPromptEvent | null>(null);
 
   useEffect(() => {
     // Check if the app is running in standalone mode (installed as PWA)
@@ -21,11 +32,11 @@ export default function InstallCheck() {
     mediaQuery.addEventListener("change", checkIsInstalled);
 
     // Capture the install prompt
-    window.addEventListener("beforeinstallprompt", (e) => {
+    window.addEventListener("beforeinstallprompt", (e: Event) => {
       // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
       // Store the event so it can be triggered later
-      setDeferredPrompt(e);
+      setDeferredPrompt(e as BeforeInstallPromptEvent);
     });
 
     return () => {
