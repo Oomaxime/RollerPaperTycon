@@ -10,7 +10,7 @@ import { useAccount, useReadContract, useWriteContract } from "wagmi";
  */
 const RPT_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
-export default function Blockchain() {
+export default function GameScreen() {
   const { writeContract, isPending, isSuccess, isError } = useWriteContract();
   const { address, isConnected } = useAccount();
 
@@ -41,7 +41,7 @@ export default function Blockchain() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100 p-8">
+    <div className="flex flex-col items-center min-h-screen p-8">
       <h1 className="text-base font-bold mb-8 text-gray-800">
         Blockchain - RollerPaperTycoon
       </h1>
