@@ -134,7 +134,6 @@ export default function GameScreen() {
                 style={{
                 width: 14 - 8 * (empty/100) + 'rem'
                 }}>
-                <hr className="absolute border-[2px] w-full border-t-0 border-blue-200" />
                 <div key={0} className="absolute top-27 bg-amber-100 left-0 z-110 w-[14rem] h-[14rem] border-[2px] border-t-0 border-blue-200 border-t-dashed "></div>
                 <div 
                     onDragStart={handleMouseDown} 
@@ -147,7 +146,6 @@ export default function GameScreen() {
                         transition: 'transform 0.01s ease-in-out'
                     }}
                 >
-
                     {Array.from({ length: Math.min(repetition, 10) }, (_, index) => (
                         <div key={index} className="bg-amber-100 w-full h-[14rem] border-t-[2px] border-dashed border-blue-200"></div>
                     ))}
@@ -160,6 +158,13 @@ export default function GameScreen() {
                     width: 8 * (empty/100) + 'rem' 
                 }}
                 >
+                  <div 
+                    className="absolute w-full h-[14rem] border-t-[2px] border-b-[2px] z-120 border-blue-200 border-dashed" 
+                    style={{
+                    top: - 25 + 'rem' ,
+                    transform: `translateY(${offsetY > 0 ? offsetY > 216 ? 216 : offsetY : 0}px)`,
+                    transition: 'transform 0.01s ease-in-out'}}>
+                  </div>
                 </div>
               </div>
               <div className="absolute w-[22rem] h-[14rem] flex items-center justify-center">
