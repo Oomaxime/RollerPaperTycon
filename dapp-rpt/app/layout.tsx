@@ -1,9 +1,6 @@
 import "./globals.css";
 import { Provider } from "@/provider/provider";
-import Home from "@/components/images/home.svg";
-import Store from "@/components/images/store.svg";
-import Image from "next/image";
-import Link from "next/link";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function RootLayout({
   children,
@@ -14,14 +11,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="flex flex-col h-screen">
         <Provider>{children}</Provider>
-        <div className="mt-auto mb-4 mr-4 ml-4 w-auto h-12 bg-blue-500 flex items-center place-content-around rounded-xl">
-          <Link href="/">
-            <Image src={Home} alt="Home" />
-          </Link>
-          <Link href="/blockchain">
-            <Image src={Store} alt="Store" />
-          </Link>
-        </div>
+        <Toaster />
       </body>
     </html>
   );
