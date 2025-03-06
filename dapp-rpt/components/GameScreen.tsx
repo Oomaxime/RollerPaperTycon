@@ -99,6 +99,7 @@ export default function GameScreen() {
       setIsDragging(false);
       if (offsetY > 0) {
           setRepetition(repetition + 1);
+          handleAddScore()
           setEmpty(empty > 0 ? empty - 1 : 0);
           console.log('L\'utilisateur a glissé vers le bas');
       } else {
