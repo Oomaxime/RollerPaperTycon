@@ -1,10 +1,9 @@
 import "./globals.css";
-import { Provider } from "@/public/components/provider";
+import { Provider } from "@/provider/provider";
 import Home from "@/components/images/home.svg";
 import Store from "@/components/images/store.svg";
 import Image from "next/image";
 import Link from "next/link";
-
 
 export default function RootLayout({
   children,
@@ -16,7 +15,7 @@ export default function RootLayout({
       <body className="flex flex-col h-screen">
         <Provider>{children}</Provider>
         <div className="mt-auto mb-4 mr-4 ml-4 w-auto h-12 bg-blue-500 flex items-center place-content-around rounded-xl">
-          <Link href="/"> 
+          <Link href="/">
             <Image src={Home} alt="Home" />
           </Link>
           <Link href="/blockchain">
