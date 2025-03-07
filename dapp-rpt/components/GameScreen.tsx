@@ -61,6 +61,7 @@ export default function GameScreen() {
       },
       {
         onSuccess: () => {
+          
           toast.success("Minting successful");
           refetch();
         },
