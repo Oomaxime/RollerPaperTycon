@@ -127,7 +127,6 @@ export default function Blockchain() {
       prevSkins.map((skin) => ({
         ...skin,
         isUsed: skin.id === skinId,
-        isUsed: skin.id === skinId,
       }))
     );
     localStorage.setItem("skin_color", JSON.stringify(COLORS_PAPERS[skinId]));
