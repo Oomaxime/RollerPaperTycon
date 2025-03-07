@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { Button } from "./ui/button";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 export default function Blockchain() {
 
@@ -82,31 +83,34 @@ export default function Blockchain() {
           <hr />
 
           <div>
-            <Carousel opts={{ align: "start" }} className="w-full max-w-sm">
+            <Carousel opts={{ align: "start" }} className="w-full">
               <CarouselContent>
                 {skins.map((skin) => (
                   <CarouselItem key={skin.id} className="md:basis-1/2 lg:basis-1/3">
                     <div className="p-1">
                       <Card>
                         <CardContent className="flex aspect-square items-center justify-center p-6 h-60">
-                          <span className="text-3xl font-semibold">
-                            Skin {skin.id + 1}
-                          </span>
+                          <Image
+                            src={`/skins/${skin.id}.webp`}
+                            alt={`Skin ${skin.id}`}
+                            width={200}
+                            height={200}
+                          />
                         </CardContent>
                       </Card>
 
                       {skin.isBought ? (
                         skin.isUsed ? (
-                          <Button className="mt-4 w-[300px]" disabled>
-                            En cours d'utilisation 
+                          <Button className="mt-4 w-full cursor-pointer" disabled>
+                            En cours d'utilisation
                           </Button>
                         ) : (
-                          <Button className="mt-4 w-[300px]" onClick={() => useSkin(skin.id)}>
+                          <Button className="mt-4 w-full cursor-pointer" onClick={() => useSkin(skin.id)}>
                             Utiliser le skin ?
                           </Button>
                         )
                       ) : (
-                        <Button className="mt-4 w-[300px]" onClick={() => buySkin(skin.id)}>
+                        <Button className="mt-4 w-full cursor-pointer" onClick={() => buySkin(skin.id)}>
                           Acheter
                         </Button>
                       )}
