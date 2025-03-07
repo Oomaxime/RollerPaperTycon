@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { RPT_ABI } from "@/public/RollerPaperTycoon";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
@@ -7,45 +7,38 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { Button } from "./ui/button";
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, GalleryHorizontal } from 'lucide-react';
+import { ArrowLeft, GalleryHorizontal } from "lucide-react";
 import { FaToiletPaper } from "react-icons/fa";
-
-
 
 const RPT_ADDRESS = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
 const STORE_ADDRESS = "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199";
 
+// Tableau des couleurs correspondant aux skins
+const COLORS_PAPERS = [
+  "#f5f5f5",
+  "#f0e68c",
+  "#ffcccb",
+  "#ff69b4",
+  "#ff4500",
+];
+
+interface Skin {
+  id: number;
+  isBought: boolean;
+  isUsed: boolean;
+  price: number;
+}
+
+const defaultSkins: Skin[] = [
+  { id: 0, isBought: false, isUsed: false, price: 10 },
+  { id: 1, isBought: false, isUsed: false, price: 25 },
+  { id: 2, isBought: false, isUsed: false, price: 50 },
+  { id: 3, isBought: false, isUsed: false, price: 100 },
+  { id: 4, isBought: false, isUsed: false, price: 200 },
+];
 
 export default function Blockchain() {
-
-  // localStorage.clear()
-
-  // Déclaration du tableau de couleurs
-  const COLORS_PAPERS = [
-    "#f5f5f5",
-    "#f0e68c",
-    "#ffcccb",
-    "#ff69b4",
-    "#ff4500",
-  ];
-
-  interface Skin {
-    id: number;
-    isBought: boolean;
-    isUsed: boolean;
-    price: number;
-  }
-
-  const defaultSkins: Skin[] = [
-    { id: 0, isBought: false, isUsed: false, price: 10 },
-    { id: 1, isBought: false, isUsed: false, price: 25 },
-    { id: 2, isBought: false, isUsed: false, price: 50 },
-    { id: 3, isBought: false, isUsed: false, price: 100 },
-    { id: 4, isBought: false, isUsed: false, price: 200 },
-  ];
-
   const { writeContract, isPending, isSuccess, isError } = useWriteContract();
   const { address, isConnected } = useAccount();
 
@@ -70,7 +63,7 @@ export default function Blockchain() {
     }
   }, [skins]);
 
-  // Surveille le résultat de la transaction et met à jour l'état du skin concerné
+  // Mise à jour de l'état du skin concerné en fonction du résultat de la transaction
   useEffect(() => {
     if (currentTxSkinId !== null) {
       if (isSuccess) {
@@ -129,45 +122,39 @@ export default function Blockchain() {
         isUsed: skin.id === skinId,
       }))
     );
-    localStorage.setItem("skin_color", JSON.stringify(COLORS_PAPERS[skinId]));
+    // Enregistrer la couleur directement sans JSON.stringify
+    localStorage.setItem("skin_color", COLORS_PAPERS[skinId]);
     console.log("Couleur sauvegardée:", localStorage.getItem("skin_color"));
   };
-
 
   return (
     <div className="min-h-screen flex flex-col justify-center gap-4 p-8" style={{ height: "calc(100vh - 64px)" }}>
       {isConnected ? (
         <div className="flex flex-col justify-center items-center gap-4 w-full">
           <h1 className="text-center">
-            Aller aux toilettes, c'est bien... <b>Mais le faire avec style, c'est encore mieux !😎</b> 
-            Choisissez parmi nos nombreux skins de papiers toilettes pour avoir la classe, même sur le trône! 🧻
+            Aller aux toilettes, c'est bien... <b>Mais le faire avec style, c'est encore mieux !😎</b> Choisissez parmi nos nombreux skins de papiers toilettes pour avoir la classe, même sur le trône! 🧻
           </h1>
-
           <div className="absolute top-2 right-2 p-4">
             <ConnectButton accountStatus="avatar" chainStatus="none" />
           </div>
-
           <Link href={`/`} className="absolute top-2 left-2 p-4">
             <Button className="cursor-pointer">
               <ArrowLeft />
             </Button>
           </Link>
-
           <div className="flex justify-center items-center gap-4 mt-4">
             <GalleryHorizontal />
           </div>
-
           <Carousel opts={{ align: "start" }} className="w-full">
             <CarouselContent>
               {skins.map((skin) => (
                 <CarouselItem key={skin.id} className="md:basis-1/2 lg:basis-1/3">
                   <div className="p-0">
                     <Card className="p-0">
-                      <CardContent className="p-0 overflow-hidden flex justify-center items-center" >
-                        <FaToiletPaper size={300} color={COLORS_PAPERS[skin.id]}  />
+                      <CardContent className="p-0 overflow-hidden flex justify-center items-center">
+                        <FaToiletPaper size={300} color={COLORS_PAPERS[skin.id]} />
                       </CardContent>
                     </Card>
-
                     {skin.isBought ? (
                       skin.isUsed ? (
                         <Button className="mt-4 w-full cursor-pointer" disabled>
@@ -183,7 +170,6 @@ export default function Blockchain() {
                         Acheter {skin.price} NFT
                       </Button>
                     )}
-
                     {currentTxSkinId === skin.id && isPending && (
                       <p className="text-yellow-500">Achat en cours...</p>
                     )}
@@ -199,8 +185,7 @@ export default function Blockchain() {
       ) : (
         <div>
           <p className="text-lg text-center text-gray-500">
-            Tout le monde a besoin de papier toilette, même les non-connectés! 
-            Connectez-vous pour avoir accès à notre collection de papiers toilettes! 🧻
+            Tout le monde a besoin de papier toilette, même les non-connectés! Connectez-vous pour avoir accès à notre collection de papiers toilettes! 🧻
           </p>
           <ConnectButton />
         </div>
