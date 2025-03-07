@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { use, useEffect } from "react";
 import { RPT_ABI } from "@/data/RollerPaperTycoon";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount, useReadContract, useWriteContract } from "wagmi";
@@ -83,6 +83,10 @@ export default function GameScreen() {
   const [empty, setEmpty] = useState(100);
 
   const [color, setColor] = useState("#f8d6ff")
+
+  useEffect(() => {
+    setColor(localStorage.getItem("skin_color") || "#f8d6ff");
+  }, []);
 
   const handleMouseDown = (e) => {
     setIsDragging(true);
