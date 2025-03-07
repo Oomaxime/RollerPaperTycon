@@ -6,6 +6,8 @@ import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carouse
 import { Button } from "./ui/button";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { ArrowLeft } from 'lucide-react';
 
 export default function Blockchain() {
 
@@ -72,7 +74,7 @@ export default function Blockchain() {
   };  
 
   return (
-    <div className="flex flex-col p-8" style={{ height: "calc(100vh - 64px)" }}>
+    <div className="min-h-screen flex flex-col justify-center gap-4 p-8" style={{ height: "calc(100vh - 64px)" }}>
       {isConnected ? (
         <div>
           <h1 className="text-center">
@@ -82,19 +84,30 @@ export default function Blockchain() {
           <br />
           <hr />
 
+          <div className="absolute top-2 right-2 p-4">
+            <ConnectButton accountStatus="avatar" chainStatus="none" />
+          </div>
+
+          <Link href={`/`} className="absolute top-2 left-2 p-4">
+            <Button className="cursor-pointer">
+              <ArrowLeft />
+            </Button>
+          </Link>
+
           <div>
             <Carousel opts={{ align: "start" }} className="w-full">
               <CarouselContent>
                 {skins.map((skin) => (
                   <CarouselItem key={skin.id} className="md:basis-1/2 lg:basis-1/3">
                     <div className="p-1">
-                      <Card>
-                        <CardContent className="flex aspect-square items-center justify-center p-6 h-60">
+                      <Card className="p-0">
+                        <CardContent className="p-0 overflow-hidden">
                           <Image
                             src={`/skins/${skin.id}.webp`}
                             alt={`Skin ${skin.id}`}
-                            width={200}
-                            height={200}
+                            width={1000}
+                            height={1000}
+                            className="rounded-lg"
                           />
                         </CardContent>
                       </Card>
