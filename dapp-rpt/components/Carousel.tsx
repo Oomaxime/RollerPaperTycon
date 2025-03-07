@@ -109,7 +109,8 @@ export default function Blockchain() {
         ...skin,
         isUsed: skin.id === skinId,
       }))
-    );
+    )
+    localStorage.setItem("skin_color", JSON.stringify(skinId))
   };
 
   return (
