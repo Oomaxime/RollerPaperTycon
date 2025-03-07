@@ -2,7 +2,7 @@
 
 import { RPT_ABI } from "@/public/RollerPaperTycoon";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useAccount, useWriteContract } from "wagmi";
+import { useAccount, useReadContract, useWriteContract } from "wagmi";
 import { Card, CardContent } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import { Button } from "./ui/button";
@@ -127,6 +127,13 @@ export default function Blockchain() {
     console.log("Couleur sauvegardée:", localStorage.getItem("skin_color"));
   };
 
+  const { data: balance, refetch } = useReadContract({
+    abi: RPT_ABI,
+    functionName: "balanceOf",
+    address: RPT_ADDRESS,
+    args: address ? [address] : undefined,
+  });
+
   return (
     <div className="min-h-screen flex flex-col justify-center gap-4 p-8" style={{ height: "calc(100vh - 64px)" }}>
       {isConnected ? (
@@ -142,6 +149,11 @@ export default function Blockchain() {
               <ArrowLeft />
             </Button>
           </Link>
+          <div className="flex w-full justify-end items-center absolute bottom-4 right-8 gap-2">
+            <p className="text-gray-900 font-medium text-xl">
+              {balance?.toString()} RPT
+            </p>
+          </div>
           <div className="flex justify-center items-center gap-4 mt-4">
             <GalleryHorizontal />
           </div>

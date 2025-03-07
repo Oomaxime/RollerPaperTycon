@@ -271,7 +271,7 @@ export default function GameScreen() {
                 <Icon icon="mdi:shopping" />
               </Button>
             </Link>
-            </div>
+          </div>
         </div>
       ) : (
         <div className="flex flex-col items-center gap-10 p-8 relative">
