@@ -70,8 +70,9 @@ export default function Blockchain() {
         ...skin,
         isUsed: skin.id === skinId, // Seul le skin sélectionné est utilisé
       }))
-    );
-  };  
+    )
+    localStorage.setItem("skin_color", JSON.stringify(skinId))
+  };
 
   return (
     <div className="min-h-screen flex flex-col justify-center gap-4 p-8" style={{ height: "calc(100vh - 64px)" }}>
