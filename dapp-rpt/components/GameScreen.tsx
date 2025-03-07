@@ -130,12 +130,15 @@ export default function GameScreen() {
   };
 
   const mouseClick = () => {
-    setTimeout(()=>{}, 30000)
     if (empty > 25 && clickable) {
       setRepetition(repetition + 1);
       handleAddScore()
-      setOffsetY(100)
+      setOffsetY(224)
       setEmpty(empty > 0 ? empty - 1 : 0);
+      setTimeout(()=>{
+        setOffsetY(0)
+      }, 500)
+      
     } else {
       goingBack()
     }
@@ -179,23 +182,31 @@ export default function GameScreen() {
                   width: 14 - 8 * (empty/100) + 'rem'
                 }}>
                 <div 
-                  key={0} 
-                  className="absolute top-27 left-0 z-110 w-[14rem] h-[14rem] border-[2px] border-t-0 border-t-dashed shadow-xl"
+                  className="absolute top-27 left-0 z-110 w-[14rem] h-[14rem] border-t-none border-l-[.2rem] border-r-[.2rem] border-b-[.2rem] cursor-grab"
                   style={{
                     backgroundColor: color,
-                    borderColor : bordercolor
-                  }}
-                ></div>
+                    borderColor: bordercolor,
+                  }}>
+                  <div 
+                    key={0} 
+                    className="relative w-full h-[14rem] border-t-[2px] border-dashed"
+                    style={{
+                      borderColor : bordercolor,
+                      transform: `translateY(${offsetY > 0 ? offsetY > 216 ? 216 : offsetY : 0}px)`,
+                      transition: 'transform  0.5s ease-out',
+                    }}
+                  ></div>
+                </div>
                 <div 
                     onDragStart={handleMouseDown} 
                     onDrag={handleMouseMove} 
                     onDragEnd={handleMouseUp} 
                     onClick={mouseClick}
-                    className="absolute flex flex-col w-[14rem] min-h-[14rem] top-27 z-110 border-t-none border-l-[.2rem] border-r-[.2rem] border-b-[.2rem] shadow-xl"
+                    className="absolute flex flex-col w-[14rem] min-h-[14rem] top-27 z-110 border-t-none border-l-[.2rem] border-r-[.2rem] border-b-[.2rem] cursor-grab"
                     style={{
                         left: 0 + 'rem',
                         transform: `translateY(${offsetY > 0 ? offsetY > 218 ? 218 : offsetY : 0}px)`,
-                        transition: 'transform 0.1s ease-in-out',
+                        transition: offsetY === 0 ? ' ' : 'transform 0.5s ease-out',
                         borderColor : bordercolor
                     }}
                 >
@@ -212,7 +223,7 @@ export default function GameScreen() {
                 </div>
                 </div>
                 <div 
-                className="relative flex items-center justify-center rounded-[100%] left-0 z-10 border-[.2rem]"
+                className="relative flex items-center justify-center rounded-[100%] left-0 z-10 border-[.2rem] overflow-hidden"
                 style={{
                     height: 14 * (empty/100) + 'rem',
                     width: 8 * (empty/100) + 'rem',
@@ -223,9 +234,9 @@ export default function GameScreen() {
                   <div 
                     className="absolute w-full h-[14rem] border-t-[2px] border-b-[2px] z-120 border-dashed" 
                     style={{
-                      top: - 25 + 'rem' ,
+                      top: - 21 + 'rem' ,
                       transform: `translateY(${offsetY > 0 ? offsetY > 216 ? 216 : offsetY : 0}px)`,
-                      transition: 'transform 0.01s ease-in-out',
+                      transition: offsetY === 0 ? ' ' : 'transform  0.5s ease-out',
                       borderColor : bordercolor
                     }}>
                   </div>
@@ -243,9 +254,9 @@ export default function GameScreen() {
                 <div 
                     className="absolute w-full h-[14rem] border-t-[2px] border-b-[2px] z-120 border-dashed" 
                     style={{
-                      top: - 25 + 'rem' ,
+                      top: - 21 + 'rem' ,
                       transform: `translateY(${offsetY > 0 ? offsetY > 216 ? 216 : offsetY : 0}px)`,
-                      transition: 'transform 0.01s ease-in-out',
+                      transition: offsetY === 0 ? ' ' : 'transform 0.5s ease-out',
                       borderColor : bordercolor
                     }}>
                 </div>
@@ -272,7 +283,7 @@ export default function GameScreen() {
                 <Icon icon="mdi:shopping" />
               </Button>
             </Link>
-          </div>
+            </div>
         </div>
       ) : (
         <div className="flex flex-col items-center gap-10 p-8 relative">
