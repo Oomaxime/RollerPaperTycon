@@ -1,10 +1,15 @@
 "use client";
 
+import React from "react";
 import { RPT_ABI } from "@/public/RollerPaperTycoon";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount, useReadContract, useWriteContract } from "wagmi";
 import { Card, CardContent } from "@/components/ui/card";
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 import { Button } from "./ui/button";
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -15,13 +20,7 @@ const RPT_ADDRESS = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
 const STORE_ADDRESS = "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199";
 
 // Tableau des couleurs correspondant aux skins
-const COLORS_PAPERS = [
-  "#f5f5f5",
-  "#f0e68c",
-  "#ffcccb",
-  "#ff69b4",
-  "#ff4500",
-];
+const COLORS_PAPERS = ["#f5f5f5", "#f0e68c", "#ffcccb", "#ff69b4", "#ff4500"];
 
 interface Skin {
   id: number;
@@ -52,7 +51,9 @@ export default function Blockchain() {
   });
 
   // Message d'état pour chaque skin
-  const [errorMessages, setErrorMessages] = useState<{ [key: number]: string | null }>({});
+  const [errorMessages, setErrorMessages] = useState<{
+    [key: number]: string | null;
+  }>({});
   // ID du skin dont la transaction est en cours
   const [currentTxSkinId, setCurrentTxSkinId] = useState<number | null>(null);
 
@@ -63,16 +64,30 @@ export default function Blockchain() {
     }
   }, [skins]);
 
-  // Mise à jour de l'état du skin concerné en fonction du résultat de la transaction
+  // Add refetch capability to the balance query
+  const { data: balance, refetch: refetchBalance } = useReadContract({
+    abi: RPT_ABI,
+    functionName: "balanceOf",
+    address: RPT_ADDRESS,
+    args: address ? [address] : undefined,
+  });
+
+  // Update the useEffect to refetch balance after successful transaction
   useEffect(() => {
     if (currentTxSkinId !== null) {
       if (isSuccess) {
+        // Refetch the balance after successful transaction
+        refetchBalance();
+
         setSkins((prev) =>
           prev.map((skin) =>
             skin.id === currentTxSkinId ? { ...skin, isBought: true } : skin
           )
         );
-        setErrorMessages((prev) => ({ ...prev, [currentTxSkinId]: "Achat effectué !" }));
+        setErrorMessages((prev) => ({
+          ...prev,
+          [currentTxSkinId]: "Achat effectué !",
+        }));
         const skinIdToClear = currentTxSkinId;
         setTimeout(() => {
           setErrorMessages((prev) => ({ ...prev, [skinIdToClear]: null }));
@@ -84,7 +99,10 @@ export default function Blockchain() {
             skin.id === currentTxSkinId ? { ...skin, isBought: false } : skin
           )
         );
-        setErrorMessages((prev) => ({ ...prev, [currentTxSkinId]: "Achat annulé." }));
+        setErrorMessages((prev) => ({
+          ...prev,
+          [currentTxSkinId]: "Achat annulé.",
+        }));
         const skinIdToClear = currentTxSkinId;
         setTimeout(() => {
           setErrorMessages((prev) => ({ ...prev, [skinIdToClear]: null }));
@@ -92,7 +110,7 @@ export default function Blockchain() {
         setCurrentTxSkinId(null);
       }
     }
-  }, [isSuccess, isError, currentTxSkinId]);
+  }, [isSuccess, isError, currentTxSkinId, refetchBalance]);
 
   const buySkin = (skinId: number) => {
     const selectedSkin = skins.find((skin) => skin.id === skinId);
@@ -104,18 +122,24 @@ export default function Blockchain() {
       console.error("Utilisateur non connecté");
       return;
     }
-    // Enregistrer l'ID du skin en cours et lancer la transaction
+
+    // Enregistrer l'ID du skin en cours
     setCurrentTxSkinId(skinId);
+
+    // Convertir le prix en BigInt
+    const price = BigInt(selectedSkin.price);
+
+    // Exécuter la transaction avec le prix correct
     writeContract({
       abi: RPT_ABI,
       functionName: "transfer",
-      address: STORE_ADDRESS,
-      args: [RPT_ADDRESS, BigInt(selectedSkin.price)],
+      address: RPT_ADDRESS, // Le contrat RPT (token)
+      args: [STORE_ADDRESS, price], // Transférer du user vers le store
     });
   };
 
-  const useSkin = (skinId: number) => {
-    console.log("useSkin déclenché pour le skin", skinId);
+  const applySkin = (skinId: number) => {
+    console.log("applySkin déclenché pour le skin", skinId);
     setSkins((prevSkins) =>
       prevSkins.map((skin) => ({
         ...skin,
@@ -127,19 +151,18 @@ export default function Blockchain() {
     console.log("Couleur sauvegardée:", localStorage.getItem("skin_color"));
   };
 
-  const { data: balance, refetch } = useReadContract({
-    abi: RPT_ABI,
-    functionName: "balanceOf",
-    address: RPT_ADDRESS,
-    args: address ? [address] : undefined,
-  });
-
   return (
-    <div className="min-h-screen flex flex-col justify-center gap-4 p-8" style={{ height: "calc(100vh - 64px)" }}>
+    <div
+      className="min-h-screen flex flex-col justify-center gap-4 p-8"
+      style={{ height: "calc(100vh - 64px)" }}
+    >
       {isConnected ? (
         <div className="flex flex-col justify-center items-center gap-4 w-full">
           <h1 className="text-center">
-            Aller aux toilettes, c'est bien... <b>Mais le faire avec style, c'est encore mieux !😎</b> Choisissez parmi nos nombreux skins de papiers toilettes pour avoir la classe, même sur le trône! 🧻
+            Aller aux toilettes, c&apos;est bien...{" "}
+            <b>Mais le faire avec style, c&apos;est encore mieux !😎</b>{" "}
+            Choisissez parmi nos nombreux skins de papiers toilettes pour avoir
+            la classe, même sur le trône! 🧻
           </h1>
           <div className="absolute top-2 right-2 p-4">
             <ConnectButton accountStatus="avatar" chainStatus="none" />
@@ -160,11 +183,17 @@ export default function Blockchain() {
           <Carousel opts={{ align: "start" }} className="w-full">
             <CarouselContent>
               {skins.map((skin) => (
-                <CarouselItem key={skin.id} className="md:basis-1/2 lg:basis-1/3">
+                <CarouselItem
+                  key={skin.id}
+                  className="md:basis-1/2 lg:basis-1/3"
+                >
                   <div className="p-0">
                     <Card className="p-0">
                       <CardContent className="p-0 overflow-hidden flex justify-center items-center">
-                        <FaToiletPaper size={300} color={COLORS_PAPERS[skin.id]} />
+                        <FaToiletPaper
+                          size={300}
+                          color={COLORS_PAPERS[skin.id]}
+                        />
                       </CardContent>
                     </Card>
                     {skin.isBought ? (
@@ -173,12 +202,18 @@ export default function Blockchain() {
                           En cours d&apos;utilisation
                         </Button>
                       ) : (
-                        <Button className="mt-4 w-full cursor-pointer" onClick={() => useSkin(skin.id)}>
+                        <Button
+                          className="mt-4 w-full cursor-pointer"
+                          onClick={() => applySkin(skin.id)}
+                        >
                           Utiliser le skin ?
                         </Button>
                       )
                     ) : (
-                      <Button className="mt-4 w-full cursor-pointer" onClick={() => buySkin(skin.id)}>
+                      <Button
+                        className="mt-4 w-full cursor-pointer"
+                        onClick={() => buySkin(skin.id)}
+                      >
                         Acheter {skin.price} NFT
                       </Button>
                     )}
@@ -186,7 +221,9 @@ export default function Blockchain() {
                       <p className="text-yellow-500">Achat en cours...</p>
                     )}
                     {errorMessages[skin.id] && (
-                      <p className="mt-2 text-center text-sm">{errorMessages[skin.id]}</p>
+                      <p className="mt-2 text-center text-sm">
+                        {errorMessages[skin.id]}
+                      </p>
                     )}
                   </div>
                 </CarouselItem>
@@ -197,7 +234,9 @@ export default function Blockchain() {
       ) : (
         <div>
           <p className="text-lg text-center text-gray-500">
-            Tout le monde a besoin de papier toilette, même les non-connectés! Connectez-vous pour avoir accès à notre collection de papiers toilettes! 🧻
+            Tout le monde a besoin de papier toilette, même les non-connectés!
+            Connectez-vous pour avoir accès à notre collection de papiers
+            toilettes! 🧻
           </p>
           <ConnectButton />
         </div>
