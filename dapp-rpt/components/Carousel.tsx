@@ -12,6 +12,8 @@ import { ArrowLeft, GalleryHorizontal } from "lucide-react";
 const RPT_ADDRESS = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
 const STORE_ADDRESS = "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199";
 
+// localStorage.clear();
+
 export default function Blockchain() {
   interface Skin {
     id: number;
@@ -21,11 +23,11 @@ export default function Blockchain() {
   }
 
   const defaultSkins: Skin[] = [
-    { id: 0, isBought: false, isUsed: false, price: 100 },
-    { id: 1, isBought: false, isUsed: false, price: 250 },
-    { id: 2, isBought: false, isUsed: false, price: 500 },
-    { id: 3, isBought: false, isUsed: false, price: 1000 },
-    { id: 4, isBought: false, isUsed: false, price: 2000 },
+    { id: 0, isBought: false, isUsed: false, price: 10 },
+    { id: 1, isBought: false, isUsed: false, price: 25 },
+    { id: 2, isBought: false, isUsed: false, price: 50 },
+    { id: 3, isBought: false, isUsed: false, price: 100 },
+    { id: 4, isBought: false, isUsed: false, price: 200 },
   ];
 
   const { writeContract, isPending, isSuccess, isError } = useWriteContract();
