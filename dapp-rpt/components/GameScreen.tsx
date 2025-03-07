@@ -80,8 +80,10 @@ export default function GameScreen() {
   const [offsetY, setOffsetY] = useState(0);
   const [repetition, setRepetition] = useState(1);
   const [empty, setEmpty] = useState(100);
+  const [clickable, setClickable] = useState(true);
 
   const [color, setColor] = useState("#f8d6ff")
+  const [bordercolor, setBordercolor] = useState("#f2b0ff")
 
   const handleMouseDown = (e) => {
     setIsDragging(true);
@@ -108,18 +110,24 @@ export default function GameScreen() {
       setOffsetY(0);
   };
 
-  const mouseClick = () => {
+  const goingBack = (count = 0) => {
+    if (count < 75) {
+      setTimeout(() => {
+        setEmpty(prevEmpty => prevEmpty + 1);
+        setRepetition(prevRepetition => prevRepetition - 1);
+        goingBack(count + 1);
+      }, 100);
+    }
+  };
 
-    if (empty > 70) {
+  const mouseClick = () => {
+    setTimeout(()=>{}, 30000)
+    if (empty > 25 && clickable) {
       setRepetition(repetition + 1);
       handleAddScore()
       setEmpty(empty > 0 ? empty - 1 : 0);
     } else {
-      while (empty < 100) {
-        setEmpty(empty + 1)
-        console.log(empty + 1)
-        setTimeout(()=>{}, 20000)
-      }
+      goingBack()
     }
 
   }
@@ -138,18 +146,19 @@ export default function GameScreen() {
             <div className="flex justify-center items-center w-[22rem] h-[14rem]">
               <div className="flex items-center justify-center w-full">
                 <div 
-                className="flex items-center justify-center rounded-[100%] left-0 z-100 border-blue-200 border-[.2rem]"
+                className="flex items-center justify-center rounded-[100%] left-0 z-100 border-[.2rem]"
                 style={{
                     height: 14 * (empty/100) + 'rem',
                     width: 8 * (empty/100) + 'rem',
-                    backgroundColor: color
+                    backgroundColor: color,
+                    borderColor : bordercolor
                 }}
                 >
                   <div
-                    className="relative flex items-center justify-center rounded-[100%] left-0 z-10 border-[#665d44] border-[.2rem] bg-[#a1936c]"
+                    className="absolute flex items-center justify-center rounded-[100%] z-10 border-[#6e654b] border-[.2rem] bg-[#a1936c]"
                     style={{
-                      height: 5 + "rem",
-                      width: 3 + "rem"
+                      height: 3.5 + "rem",
+                      width: 2 + "rem"
                     }}
                   >
                   </div>
@@ -161,9 +170,10 @@ export default function GameScreen() {
                 }}>
                 <div 
                   key={0} 
-                  className="absolute top-27 left-0 z-110 w-[14rem] h-[14rem] border-[2px] border-t-0 border-blue-200 border-t-dashed "
+                  className="absolute top-27 left-0 z-110 w-[14rem] h-[14rem] border-[2px] border-t-0 border-t-dashed "
                   style={{
-                    backgroundColor: color
+                    backgroundColor: color,
+                    borderColor : bordercolor
                   }}
                 ></div>
                 <div 
@@ -171,55 +181,63 @@ export default function GameScreen() {
                     onDrag={handleMouseMove} 
                     onDragEnd={handleMouseUp} 
                     onClick={mouseClick}
-                    className="absolute flex flex-col w-[14rem] min-h-[14rem] top-27 z-110 border-blue-200 border-t-none border-l-[.2rem] border-r-[.2rem] border-b-[.2rem] "
+                    className="absolute flex flex-col w-[14rem] min-h-[14rem] top-27 z-110 border-t-none border-l-[.2rem] border-r-[.2rem] border-b-[.2rem] "
                     style={{
                         left: 0 + 'rem',
                         transform: `translateY(${offsetY > 0 ? offsetY > 218 ? 218 : offsetY : 0}px)`,
-                        transition: 'transform 0.01s ease-in-out'
+                        transition: 'transform 0.01s ease-in-out',
+                        borderColor : bordercolor
                     }}
                 >
                     {Array.from({ length: Math.min(repetition, 10) }, (_, index) => (
                         <div 
                           key={index} 
-                          className="w-full h-[14rem] border-t-[2px] border-dashed border-blue-200"
+                          className="w-full h-[14rem] border-t-[2px] border-dashed"
                           style={{
-                          backgroundColor: color
+                          backgroundColor: color,
+                          borderColor : bordercolor
                         }}
                         ></div>
                     ))}
                 </div>
                 </div>
                 <div 
-                className="relative flex items-center justify-center rounded-[100%] left-0 z-10 border-blue-200 border-[.2rem]"
+                className="relative flex items-center justify-center rounded-[100%] left-0 z-10 border-[.2rem]"
                 style={{
                     height: 14 * (empty/100) + 'rem',
                     width: 8 * (empty/100) + 'rem',
-                    backgroundColor: color
+                    backgroundColor: empty != 25 ? color : "#a1936c",
+                    borderColor: empty != 25 ? bordercolor : "#6e654b"
                 }}
                 >
                   <div 
-                    className="absolute w-full h-[14rem] border-t-[2px] border-b-[2px] z-120 border-blue-200 border-dashed" 
+                    className="absolute w-full h-[14rem] border-t-[2px] border-b-[2px] z-120 border-dashed" 
                     style={{
-                    top: - 25 + 'rem' ,
-                    transform: `translateY(${offsetY > 0 ? offsetY > 216 ? 216 : offsetY : 0}px)`,
-                    transition: 'transform 0.01s ease-in-out'}}>
+                      top: - 25 + 'rem' ,
+                      transform: `translateY(${offsetY > 0 ? offsetY > 216 ? 216 : offsetY : 0}px)`,
+                      transition: 'transform 0.01s ease-in-out',
+                      borderColor : bordercolor
+                    }}>
                   </div>
                 </div>
               </div>
               <div className="absolute w-[22rem] h-[14rem] flex items-center justify-center">
                 <div 
-                className="relative w-[14rem] h-[14rem] border-t-[2px] border-b-[2px]  border-blue-200 z-20 overflow-hidden"
+                className="relative w-[14rem] h-[14rem] border-t-[2px] border-b-[2px] z-20 overflow-hidden"
                 style={{
                     height: 14 * (empty/100) + 'rem',
-                    backgroundColor: color
+                    backgroundColor: empty != 25 ? color : "#a1936c",
+                    borderColor: empty != 25 ? bordercolor:"#6e654b"
                 }}
                 >
                 <div 
-                    className="absolute w-full h-[14rem] border-t-[2px] border-b-[2px] z-120 border-blue-200 border-dashed" 
+                    className="absolute w-full h-[14rem] border-t-[2px] border-b-[2px] z-120 border-dashed" 
                     style={{
-                    top: - 25 + 'rem' ,
-                    transform: `translateY(${offsetY > 0 ? offsetY > 216 ? 216 : offsetY : 0}px)`,
-                    transition: 'transform 0.01s ease-in-out'}}>
+                      top: - 25 + 'rem' ,
+                      transform: `translateY(${offsetY > 0 ? offsetY > 216 ? 216 : offsetY : 0}px)`,
+                      transition: 'transform 0.01s ease-in-out',
+                      borderColor : bordercolor
+                    }}>
                 </div>
               </div>
             </div>
