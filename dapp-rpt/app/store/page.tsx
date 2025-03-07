@@ -1,11 +1,11 @@
 "use client"
 
-import { Carousel } from "@/components/Carousel"
+import Blockchain from "@/components/Carousel"
 
 export default function Store() {
   return (
     <div>
-      <Carousel/>
+      <Blockchain/>
     </div>
   )
 }
