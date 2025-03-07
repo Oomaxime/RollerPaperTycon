@@ -1,3 +1,5 @@
+"use client"
+
 import { RPT_ABI } from "@/public/RollerPaperTycoon";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount, useWriteContract } from "wagmi";
@@ -8,8 +10,21 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, GalleryHorizontal } from 'lucide-react';
+import { FaToiletPaper } from "react-icons/fa";
+
 
 export default function Blockchain() {
+
+  // localStorage.clear()
+
+  // Déclaration du tableau de couleurs
+  const COLORS_PAPERS = [
+    "#f5f5f5",
+    "#f0e68c",
+    "#ffcccb",
+    "#ff69b4",
+    "#ff4500",
+  ];
 
   interface Skin {
     id: number;
@@ -30,27 +45,6 @@ export default function Blockchain() {
     }));
   });
   
-  //  const { data: balance, refetch } = useReadContract({
-  //    abi: RPT_ABI,  //ABI du contrat RPT ERC20
-  //    functionName: "balanceOf",  //Nom de la fonction à appeler
-  //    address: RPT_ADDRESS,  //Adresse du contrat RPT ERC20
-  //    args: address ? [address] : undefined,  //Only pass args if address exists
-  //  });
-
-  /**
-   * Fonction pour créer des jetons RPT ERC20.
-   * Cette fonction permet de créer des jetons RPT ERC20 pour l'adresse connectée.
-   */
-  //  const handleClick = () => {
-  //    if (!address) return;
-  //    writeContract({
-  //      abi: RPT_ABI,  //ABI du contrat RPT ERC20
-  //      functionName: "mint",  //Nom de la fonction à appeler
-  //      address: RPT_ADDRESS,  //Adresse du contrat RPT ERC20
-  //      args: [address, 100000n],  //Argument pour la fonction mint
-  //    });
-  //  };
-
   // Sauvegarder les skins dans localStorage à chaque modification
   useEffect(() => {
     localStorage.setItem("skins", JSON.stringify(skins));
@@ -65,14 +59,17 @@ export default function Blockchain() {
   };
 
   const useSkin = (skinId: number) => {
+    console.log("useSkin déclenché pour le skin", skinId);
     setSkins((prevSkins) =>
       prevSkins.map((skin) => ({
         ...skin,
-        isUsed: skin.id === skinId, // Seul le skin sélectionné est utilisé
+        isUsed: skin.id === skinId,
       }))
-    )
-    localStorage.setItem("skin_color", JSON.stringify(skinId))
+    );
+    localStorage.setItem("skin_color", JSON.stringify(COLORS_PAPERS[skinId]));
+    console.log("Couleur sauvegardée:", localStorage.getItem("skin_color"));
   };
+
 
   return (
     <div className="min-h-screen flex flex-col justify-center gap-4 p-8" style={{ height: "calc(100vh - 64px)" }}>
@@ -103,14 +100,8 @@ export default function Blockchain() {
                 <CarouselItem key={skin.id} className="md:basis-1/2 lg:basis-1/3">
                   <div className="p-0">
                     <Card className="p-0">
-                      <CardContent className="p-0 overflow-hidden">
-                        <Image
-                          src={`/skins/${skin.id}.webp`}
-                          alt={`Skin ${skin.id}`}
-                          width={1000}
-                          height={1000}
-                          className="rounded-lg"
-                        />
+                      <CardContent className="p-0 overflow-hidden flex justify-center items-center" >
+                        <FaToiletPaper size={300} color={COLORS_PAPERS[skin.id]}  />
                       </CardContent>
                     </Card>
 
