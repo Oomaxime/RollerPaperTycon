@@ -98,10 +98,10 @@ export default function Blockchain() {
     writeContract({
       abi: RPT_ABI,
       functionName: "transfer",
-      address: RPT_ADDRESS, // le contrat token
-      args: [STORE_ADDRESS, BigInt(selectedSkin.price)], // [destinataire, montant]
+      address: STORE_ADDRESS,
+      args: [RPT_ADDRESS, BigInt(selectedSkin.price)],
     });
-  };    
+  };
 
   const useSkin = (skinId: number) => {
     setSkins((prev) =>
