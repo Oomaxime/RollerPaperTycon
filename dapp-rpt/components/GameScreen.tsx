@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import ArrowAnimation from "./ArrowAnimation";
 import { Icon } from "@iconify/react";
+import Link from "next/link";
+import Image from "next/image";
 
 const RPT_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
@@ -76,31 +78,41 @@ export default function GameScreen() {
   return (
     <div className="flex flex-col items-center min-h-screen overflow-hidden">
       {isConnected ? (
-        <div className="flex flex-col items-center gap-6 w-full p-5 min-h-screen">
-          <div className="flex items-center justify-end w-full">
+        <div className="flex flex-col justify-center items-center gap-6 w-full p-5 min-h-screen">
+          <div className="absolute top-2 right-2 p-4">
             <ConnectButton accountStatus="avatar" chainStatus="none" />
           </div>
           <h1 className="text-3xl font-bold italic mb-2 text-gray-800">
             Roller Paper Tycoon
           </h1>
           {/* A remplacer par le vrais rouleau de papier toilette fait pas louis */}
-          <div className="w-80 h-80 bg-red-200 rounded-full flex items-center justify-center">
+          <div className="w-80 h-80 bg-red-200 rounded-full flex items-center justify-center relative opacity-75">
             <Button onClick={handleAddScore}>+</Button>
+
+            <Image
+              src="/toilet-paper.gif"
+              alt="Toilet paper"
+              width={400}
+              height={400}
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-90 z-[-1] rounded-full"
+            />
           </div>
           <p className="text-5xl font-bold text-gray-900 italic">{score}</p>
           <Button onClick={handleMintClick} className="">
             Convertir en RPT
           </Button>
 
-          <div className="flex w-full justify-end items-center absolute bottom-4 right-8 gap-2">
+          <div className="absolute bottom-2 right-2 p-4 flex items-center gap-4">
             <p className="text-gray-900 font-medium text-xl">
               {balance?.toString()} RPT
             </p>
             <span className="text-gray-900 font-medium text-xl">-</span>
             {/* Bouton pour ouvrir la boutique qui doit être remplacer par le travail d'alexis et hugo */}
-            <Button className="bg-gray-900 font-medium text-xl w-9 h-9 flex items-center justify-center">
-              <Icon icon="mdi:shopping" />
-            </Button>
+            <Link href="/carousel">
+              <Button className="bg-gray-900 font-medium text-xl w-9 h-9 flex items-center justify-center cursor-pointer">
+                <Icon icon="mdi:shopping" />
+              </Button>
+            </Link>
           </div>
         </div>
       ) : (

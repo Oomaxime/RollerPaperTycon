@@ -25,6 +25,8 @@ const defaultSkins: Skin[] = [
   { id: 3, isBought: false, isUsed: false, price: 1000, image: "/skins/skin4.png" },
   { id: 4, isBought: false, isUsed: false, price: 2000, image: "/skins/skin5.png" },
 ];
+import Link from "next/link";
+import { ArrowLeft, GalleryHorizontal } from 'lucide-react';
 
 export default function Blockchain() {
   const [skins, setSkins] = useState<Skin[]>(defaultSkins);
@@ -117,9 +119,9 @@ export default function Blockchain() {
   };
 
   return (
-    <div className="flex flex-col p-8" style={{ height: "calc(100vh - 64px)" }}>
+    <div className="min-h-screen flex flex-col justify-center gap-4 p-8" style={{ height: "calc(100vh - 64px)" }}>
       {isConnected ? (
-        <div>
+        <div className="flex flex-col justify-center items-center gap-4 w-full">
           <h1 className="text-center">
             Aller aux toilettes, c&apos;est bien...{" "}
             <b>Mais le faire avec style, c&apos;est encore mieux !😎</b> Choisissez parmi nos nombreux skins de papiers toilettes pour avoir la classe, même sur le trône! 🧻
@@ -164,12 +166,70 @@ export default function Blockchain() {
                 ))}
               </CarouselContent>
             </Carousel>
+
+          <div className="absolute top-2 right-2 p-4">
+            <ConnectButton accountStatus="avatar" chainStatus="none" />
+          </div>
+
+          <Link href={`/`} className="absolute top-2 left-2 p-4">
+            <Button className="cursor-pointer">
+              <ArrowLeft />
+            </Button>
+          </Link>
+
+          <div className="flex justify-center items-center gap-4 mt-4">
+            <GalleryHorizontal />
+          </div>
+
+          <Carousel opts={{ align: "start" }} className="w-full">
+            <CarouselContent>
+              {skins.map((skin) => (
+                <CarouselItem key={skin.id} className="md:basis-1/2 lg:basis-1/3">
+                  <div className="p-0">
+                    <Card className="p-0">
+                      <CardContent className="p-0 overflow-hidden">
+                        <Image
+                          src={`/skins/${skin.id}.webp`}
+                          alt={`Skin ${skin.id}`}
+                          width={1000}
+                          height={1000}
+                          className="rounded-lg"
+                        />
+                      </CardContent>
+                    </Card>
+
+                    {skin.isBought ? (
+                      skin.isUsed ? (
+                        <Button className="mt-4 w-full cursor-pointer" disabled>
+                          En cours d'utilisation
+                        </Button>
+                      ) : (
+                        <Button className="mt-4 w-full cursor-pointer" onClick={() => useSkin(skin.id)}>
+                          Utiliser le skin ?
+                        </Button>
+                      )
+                    ) : (
+                      <Button className="mt-4 w-full cursor-pointer" onClick={() => buySkin(skin.id)}>
+                        Acheter
+                      </Button>
+                    )}
+
+                    {isPending && <p className="text-yellow-500">Achat en cours...</p>}
+                    {isSuccess && <p className="text-green-500">Achat effectué !</p>}
+                    {isError && <p className="text-red-500">Achat annulé.</p>}
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
           </div>
         </div>
       ) : (
         <div>
           <p className="text-lg text-center text-gray-500">
             Tout le monde a besoin de papier toilette, même les non-connectés! Connectez-vous pour avoir accès à notre collection de papiers toilettes! 🧻
+            Tout le monde a besoin de papier toilette, même les non-connectés!
+            Connectez-vous pour avoir accès à notre collection de papiers toilettes! 🧻
           </p>
           <ConnectButton />
         </div>
