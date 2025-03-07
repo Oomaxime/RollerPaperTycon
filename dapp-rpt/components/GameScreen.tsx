@@ -80,12 +80,12 @@ export default function GameScreen() {
   const [offsetY, setOffsetY] = useState(0);
   const [repetition, setRepetition] = useState(1);
   const [empty, setEmpty] = useState(100);
-    
-  const divs = [];
-    
+
+  const [color, setColor] = useState("#f8d6ff")
+
   const handleMouseDown = (e) => {
-  setIsDragging(true);
-  setStartY(e.clientY);
+    setIsDragging(true);
+    setStartY(e.clientY);
   };
   
   const handleMouseMove = (e) => {
@@ -108,6 +108,22 @@ export default function GameScreen() {
       setOffsetY(0);
   };
 
+  const mouseClick = () => {
+
+    if (empty > 70) {
+      setRepetition(repetition + 1);
+      handleAddScore()
+      setEmpty(empty > 0 ? empty - 1 : 0);
+    } else {
+      while (empty < 100) {
+        setEmpty(empty + 1)
+        console.log(empty + 1)
+        setTimeout(()=>{}, 20000)
+      }
+    }
+
+  }
+
   return (
     <div className="flex flex-col items-center min-h-screen overflow-hidden">
       {isConnected ? (
@@ -119,26 +135,42 @@ export default function GameScreen() {
             Roller Paper Tycoon
           </h1>
           <div className="relative flex flex-col justify-top items-center w-full h-[30rem] overflow-hidden">
-            <div className="flex justify-center items-center bg-amber-400 w-[22rem] h-[14rem]">
+            <div className="flex justify-center items-center w-[22rem] h-[14rem]">
               <div className="flex items-center justify-center w-full">
                 <div 
-                className="flex items-center justify-center rounded-[100%] left-0 z-100 border-blue-200 border-[.2rem] bg-amber-100"
+                className="flex items-center justify-center rounded-[100%] left-0 z-100 border-blue-200 border-[.2rem]"
                 style={{
                     height: 14 * (empty/100) + 'rem',
-                    width: 8 * (empty/100) + 'rem' 
+                    width: 8 * (empty/100) + 'rem',
+                    backgroundColor: color
                 }}
                 >
+                  <div
+                    className="relative flex items-center justify-center rounded-[100%] left-0 z-10 border-[#665d44] border-[.2rem] bg-[#a1936c]"
+                    style={{
+                      height: 5 + "rem",
+                      width: 3 + "rem"
+                    }}
+                  >
+                  </div>
                 </div>
                 <div 
-                className="relative flex justify-center h-[14rem] "
-                style={{
-                width: 14 - 8 * (empty/100) + 'rem'
+                  className="relative flex justify-center h-[14rem] "
+                  style={{
+                  width: 14 - 8 * (empty/100) + 'rem'
                 }}>
-                <div key={0} className="absolute top-27 bg-amber-100 left-0 z-110 w-[14rem] h-[14rem] border-[2px] border-t-0 border-blue-200 border-t-dashed "></div>
+                <div 
+                  key={0} 
+                  className="absolute top-27 left-0 z-110 w-[14rem] h-[14rem] border-[2px] border-t-0 border-blue-200 border-t-dashed "
+                  style={{
+                    backgroundColor: color
+                  }}
+                ></div>
                 <div 
                     onDragStart={handleMouseDown} 
                     onDrag={handleMouseMove} 
                     onDragEnd={handleMouseUp} 
+                    onClick={mouseClick}
                     className="absolute flex flex-col w-[14rem] min-h-[14rem] top-27 z-110 border-blue-200 border-t-none border-l-[.2rem] border-r-[.2rem] border-b-[.2rem] "
                     style={{
                         left: 0 + 'rem',
@@ -147,15 +179,22 @@ export default function GameScreen() {
                     }}
                 >
                     {Array.from({ length: Math.min(repetition, 10) }, (_, index) => (
-                        <div key={index} className="bg-amber-100 w-full h-[14rem] border-t-[2px] border-dashed border-blue-200"></div>
+                        <div 
+                          key={index} 
+                          className="w-full h-[14rem] border-t-[2px] border-dashed border-blue-200"
+                          style={{
+                          backgroundColor: color
+                        }}
+                        ></div>
                     ))}
                 </div>
                 </div>
                 <div 
-                className="relative flex items-center justify-center rounded-[100%] left-0 z-10 border-blue-200 border-[.2rem] bg-amber-100"
+                className="relative flex items-center justify-center rounded-[100%] left-0 z-10 border-blue-200 border-[.2rem]"
                 style={{
                     height: 14 * (empty/100) + 'rem',
-                    width: 8 * (empty/100) + 'rem' 
+                    width: 8 * (empty/100) + 'rem',
+                    backgroundColor: color
                 }}
                 >
                   <div 
@@ -169,9 +208,10 @@ export default function GameScreen() {
               </div>
               <div className="absolute w-[22rem] h-[14rem] flex items-center justify-center">
                 <div 
-                className="relative w-[14rem] h-[14rem] bg-amber-100 border-t-[2px] border-b-[2px]  border-blue-200 z-20 overflow-hidden"
+                className="relative w-[14rem] h-[14rem] border-t-[2px] border-b-[2px]  border-blue-200 z-20 overflow-hidden"
                 style={{
-                    height: 14 * (empty/100) + 'rem' 
+                    height: 14 * (empty/100) + 'rem',
+                    backgroundColor: color
                 }}
                 >
                 <div 
@@ -185,9 +225,9 @@ export default function GameScreen() {
             </div>
             </div>
           </div>
-          <div className="w-80 h-80 bg-red-200 rounded-full flex items-center justify-center">
+          {/* <div className="w-80 h-80 bg-red-200 rounded-full flex items-center justify-center">
             <Button onClick={handleAddScore}>+</Button>
-          </div>
+          </div> */}
           <p className="text-5xl font-bold text-gray-900 italic">{score}</p>
           <Button onClick={handleMintClick} className="">
             Convertir en RPT
