@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import ArrowAnimation from "./ArrowAnimation";
 import { Icon } from "@iconify/react";
+import Link from "next/link";
 
 const RPT_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
@@ -98,9 +99,11 @@ export default function GameScreen() {
             </p>
             <span className="text-gray-900 font-medium text-xl">-</span>
             {/* Bouton pour ouvrir la boutique qui doit être remplacer par le travail d'alexis et hugo */}
-            <Button className="bg-gray-900 font-medium text-xl w-9 h-9 flex items-center justify-center">
-              <Icon icon="mdi:shopping" />
-            </Button>
+            <Link href="/carousel">
+              <Button className="bg-gray-900 font-medium text-xl w-9 h-9 flex items-center justify-center cursor-pointer">
+                <Icon icon="mdi:shopping" />
+              </Button>
+            </Link>
           </div>
         </div>
       ) : (
